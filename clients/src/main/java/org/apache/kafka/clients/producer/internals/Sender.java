@@ -261,7 +261,7 @@ public class Sender implements Runnable {
          *
          * 往partition上面发送消息的时候，有一些partition它们在同一台服务器上面，如果我们一个分区一个分区的发送我们的网络请求，那网络请求
          * 就会有一些频繁，因为网络资源是非常珍贵的
-         * kafka会把发往同个broker上面partition的数据组合成一个请求，燃火统一一次性发送过去，这样子就减少了网络请求
+         * kafka会把发往同个broker上面partition的数据组合成一个请求，然后统一一次性发送过去，这样子就减少了网络请求
          */
         // 如果网络连接没有建立好，batches实际为空，下面代码不会执行
         List<ClientRequest> requests = createProduceRequests(batches, now);

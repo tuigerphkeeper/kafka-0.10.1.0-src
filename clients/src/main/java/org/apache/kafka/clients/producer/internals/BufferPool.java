@@ -106,7 +106,7 @@ public final class BufferPool {
             // 并且我们的内存池不为空，那么直接从内存池里面获取一个内存块就可以使用了，跟我们连接池是一个道理
 
             /**
-             * 第一次进来，free内存池里面肯定是没有内存的，所以这里获取不到内存
+             * 第一次进来，free里面肯定是没有内存的，所以这里获取不到内存
              */
             if (size == poolableSize && !this.free.isEmpty())
                 return this.free.pollFirst();
@@ -120,7 +120,7 @@ public final class BufferPool {
             if (this.availableMemory + freeListSize >= size) {
                 // we have enough unallocated or pooled memory to immediately
                 // satisfy the request
-                // 判断availableMemory是否够分配申请的内存，如果不够，从free队尾内存累加到availableMemory，直至availableMemor > size
+                // 判断availableMemory是否够分配申请的内存，如果不够，从free队尾内存累加到availableMemory，直至availableMemory > size
                 freeUp(size);
                 // 进行内存扣减
                 this.availableMemory -= size;
@@ -130,6 +130,7 @@ public final class BufferPool {
             } else {
                 // we are out of memory and will have to block
                 // 当申请的内存大于内存池里面的内存，如当前还剩余10k，但是申请内存为32k（max(16，32)）
+                // 已分配的内存
                 int accumulated = 0;
                 ByteBuffer buffer = null;
                 Condition moreMemory = this.lock.newCondition();
