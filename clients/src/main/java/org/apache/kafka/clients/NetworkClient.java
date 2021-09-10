@@ -237,7 +237,6 @@ public class NetworkClient implements KafkaClient {
          *      判断kafka底层网络连接是否建立好了
          * canSendMore：
          *      每个往broker主机上发送消息的连接，最多能容忍5个消息发送出去了但是还没接受到响应
-         *
          */
         return connectionStates.isConnected(node) && selector.isChannelReady(node) && inFlightRequests.canSendMore(node);
     }
@@ -434,6 +433,7 @@ public class NetworkClient implements KafkaClient {
     private void processDisconnection(List<ClientResponse> responses, String nodeId, long now) {
         // 修改连接状态
         connectionStates.disconnected(nodeId, now);
+        // 移除inFlightRequests里面对应主机的请求
         for (ClientRequest request : this.inFlightRequests.clearAll(nodeId)) {
             log.trace("Cancelled request {} due to node {} being disconnected", request, nodeId);
             if (!metadataUpdater.maybeHandleDisconnection(request))

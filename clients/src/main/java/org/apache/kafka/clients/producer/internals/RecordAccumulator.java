@@ -337,7 +337,7 @@ public final class RecordAccumulator {
     public void reenqueue(RecordBatch batch, long now) {
         // 累加重试次数
         batch.attempts++;
-        // 设置上一次重试事件
+        // 设置上一次重试时间为现在
         batch.lastAttemptMs = now;
         batch.lastAppendTime = now;
         batch.setRetry();

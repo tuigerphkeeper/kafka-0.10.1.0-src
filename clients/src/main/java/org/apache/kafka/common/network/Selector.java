@@ -218,6 +218,7 @@ public class Selector implements Selectable {
         if (connected) {
             // OP_CONNECT won't trigger for immediately connected channels
             log.debug("Immediately connected to node {}", channel.id());
+            // 把key添加到immediatelyConnectedKeys对象里面
             immediatelyConnectedKeys.add(key);
             // 取消前面注册的OP_CONNECT事件
             key.interestOps(0);
@@ -323,6 +324,7 @@ public class Selector implements Selectable {
         if (readyKeys > 0 || !immediatelyConnectedKeys.isEmpty()) {
             // 立马就对这个Selector上的key进行处理
             pollSelectionKeys(this.nioSelector.selectedKeys(), false, endSelect);
+            // 处理前面初始化连接时就马上成功的key
             pollSelectionKeys(immediatelyConnectedKeys, true, endSelect);
         }
         // 对stagedReceives里面的数据进行处理

@@ -388,6 +388,7 @@ public class Sender implements Runnable {
             /**
              * 这里过来的数据可能
              *      1.带有异常不可以重试（1.压根就不可以重试，2.重试次数超了）
+             *      2.没有异常
              */
             // 其余情况都走这个分支
             RuntimeException exception;
